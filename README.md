@@ -91,6 +91,29 @@ under that path and verifies every file, directory, and symlink against the
 entry's mode/owner/group settings. The `type` check only applies to the root
 path; children inherit the remaining checks.
 
+### YAML error context
+
+When the spec file has YAML syntax errors, the tool displays the error with a
+window of surrounding lines and a `>` marker on the offending line:
+
+```
+spec.yaml:4: did not find expected ',' or '}'
+  >    4 |   bad: [unclosed
+       5 |   e: 5
+       6 |   f: 6
+       7 |   g: 7
+
+yaml: line 4: did not find expected ',' or '}'
+```
+
+If the error is `did not find expected key`, a hint is also shown:
+
+```
+spec.yaml:2: did not find expected key
+  hint: did you mean `- path: /some/path`?
+  >    2 |   - /some/path
+```
+
 ## Installation
 
 ```sh

@@ -53,7 +53,7 @@ type Result struct {
 func Verify(specFile string, vars config.Variables) (*Result, error) {
 	s, err := spec.Load(specFile)
 	if err != nil {
-		return nil, fmt.Errorf("loading spec: %w", err)
+		return nil, err
 	}
 
 	s.ApplyDefaults()
@@ -172,32 +172,36 @@ func verifyGlob(
 	baseDir := globBaseDir(pattern)
 	filePat := globFilePattern(pattern)
 
-	matches, err := filepath.Glob(pattern)
-	if err != nil {
-		return EntryResult{
-			Path:      pattern,
-			SpecIndex: specIndex,
-			Violations: []Violation{{
-				Path:     pattern,
-				Check:    CheckGlobNoMatch,
-				Expected: "glob match",
-				Actual:   fmt.Sprintf("invalid glob: %v", err),
-			}},
-			Passed: false,
+	var matches []string
+	{
+		var err error
+		matches, err = filepath.Glob(pattern)
+		if err != nil {
+			return EntryResult{
+				Path:      pattern,
+				SpecIndex: specIndex,
+				Violations: []Violation{{
+					Path:     pattern,
+					Check:    CheckGlobNoMatch,
+					Expected: "glob match",
+					Actual:   fmt.Sprintf("invalid glob: %v", err),
+				}},
+				Passed: false,
+			}
 		}
 	}
 
 	if entry.Recursive {
-		_ = filepath.WalkDir(baseDir, func(walkPath string, _ fs.DirEntry, err error) error {
-			if err != nil {
+		_ = filepath.WalkDir(baseDir, func(walkPath string, _ fs.DirEntry, walkErr error) error {
+			if walkErr != nil {
 				return nil //nolint:nilerr // ignore walk errors
 			}
 			if walkPath == baseDir {
 				return nil
 			}
 			name := filepath.Base(walkPath)
-			match, matchErr := filepath.Match(filePat, name)
-			if matchErr == nil && match {
+			match, err := filepath.Match(filePat, name)
+			if err == nil && match {
 				matches = append(matches, walkPath)
 			}
 			return nil

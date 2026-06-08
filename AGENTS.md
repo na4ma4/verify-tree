@@ -16,6 +16,7 @@ mage golang:test        # tests with race detector
 | `cmd/verify-tree/` | Cobra CLI, flag parsing, variable collection |
 | `internal/config/` | Template variable resolution (CLI > env > file) |
 | `internal/spec/` | YAML spec types, loading via go-yamladv, defaults |
+| `internal/spec/errorcontext_test.go` | Tests for YAML error context window (`yamlErrorWithContext`, `hintForLine`) via `spec.Load` |
 | `internal/verifier/` | Core verification logic (type/mode/owner/group/target) |
 | `internal/output/` | Output formatting: text (color/plain), JSON, YAML via `output.Format` |
 

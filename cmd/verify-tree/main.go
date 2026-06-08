@@ -8,6 +8,8 @@ import (
 )
 
 func mainCommand(cmd *cobra.Command, _ []string) error {
+	cmd.SilenceUsage = true
+
 	ctx := contextual.NewCancellable(cmd.Context(),
 		contextual.WithSignalCancelOption(),
 	)

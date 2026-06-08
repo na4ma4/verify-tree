@@ -52,9 +52,13 @@ func (v Variables) LoadFromEnv() {
 
 //nolint:mnd // k=v is 2
 func (v Variables) LoadFromFile(path string) error {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return fmt.Errorf("reading variables file: %w", err)
+	var data []byte
+	{
+		var err error
+		data, err = os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("reading variables file: %w", err)
+		}
 	}
 
 	for line := range strings.SplitSeq(string(data), "\n") {
