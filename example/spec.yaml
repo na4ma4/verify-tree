@@ -1,0 +1,50 @@
+defaults:
+  owner: "{{ app_owner }}"
+  group: "{{ app_group }}"
+  file_mode: "0640"
+  dir_mode: "0750"
+
+entries:
+  - path: "{{ root }}"
+    type: directory
+    mode: "0755"
+
+  - path: "{{ root }}/data"
+    type: directory
+    mode: "0755"
+    recursive: true
+
+  - path: "{{ root }}/data/*"
+    type: file
+    mode: "0755"
+    recursive: true
+
+  - path: "{{ root }}/bin/something"
+    type: file
+    mode: "0755"
+
+  - path: "{{ root }}/etc/config.yml"
+    type: file
+
+  - path: "{{ root }}/var"
+    type: directory
+    mode: "2770"
+  
+  - path: "{{ root }}/etc/*.toml"
+    type: file
+    mode: "0600"
+
+  - path: "{{ root }}/logs"
+    type: symlink
+    target: "{{ storage }}/{{ program }}/logs"
+    ignore: [missing]
+
+  - path: "{{ root }}/optional"
+    type: directory
+    mode: "0755"
+    ignore: [missing, glob-no-match]
+
+  - path: "{{ root }}/tmp/*.lock"
+    type: file
+    mode: "0600"
+    ignore: [glob-no-match]
