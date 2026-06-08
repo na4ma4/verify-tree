@@ -88,9 +88,13 @@ func splitVar(s string) []string {
 }
 
 func runVerify(_ context.Context, w io.Writer, vars config.Variables) error {
-	result, err := verifier.Verify(specFile, vars)
-	if err != nil {
-		return fmt.Errorf("verification error: %w", err)
+	var result *verifier.Result
+	{
+		var err error
+		result, err = verifier.Verify(specFile, vars)
+		if err != nil {
+			return err
+		}
 	}
 
 	useColor := !noColour && os.Getenv("NO_COLOR") == "" && os.Getenv("TERM") != "dumb"
