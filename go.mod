@@ -3,7 +3,7 @@ module github.com/na4ma4/verify-tree
 go 1.26.1
 
 require (
-	github.com/dosquad/mage v0.5.0
+	github.com/dosquad/mage v0.5.1
 	github.com/magefile/mage v1.17.2
 	github.com/na4ma4/go-contextual v0.3.0
 	github.com/na4ma4/go-permbits v0.5.4
