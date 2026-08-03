@@ -9,7 +9,7 @@ require (
 	github.com/na4ma4/go-permbits v0.5.4
 	github.com/na4ma4/go-yamladv v1.0.1
 	github.com/spf13/cobra v1.10.2
-	go.yaml.in/yaml/v3 v3.0.4
+	go.yaml.in/yaml/v3 v3.0.5
 )
 
 require (
